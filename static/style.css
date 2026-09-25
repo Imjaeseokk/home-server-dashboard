@@ -1,0 +1,580 @@
+:root {
+  --bg: #050914;
+
+  --panel: rgba(14, 24, 44, 0.58);
+  --panel-hover: rgba(18, 31, 56, 0.72);
+
+  --border: rgba(255, 255, 255, 0.1);
+
+  --text: #f5f7fb;
+  --text-secondary: #9099aa;
+  --text-muted: #606b7d;
+
+  --accent: #4da3ff;
+  --accent-soft: rgba(77, 163, 255, 0.16);
+
+  --success: #65e6ad;
+  --warning: #ffc46b;
+  --danger: #ff6f7d;
+
+  --radius: 24px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+
+  color: var(--text);
+
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  background:
+    radial-gradient(
+      circle at 15% 10%,
+      rgba(0, 107, 255, 0.24),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 85% 80%,
+      rgba(73, 56, 255, 0.18),
+      transparent 32%
+    ),
+    var(--bg);
+}
+
+body::before {
+  content: "";
+
+  position: fixed;
+  inset: 0;
+
+  pointer-events: none;
+
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.025),
+    transparent 35%
+  );
+}
+
+.dashboard {
+  width: min(1180px, calc(100% - 48px));
+
+  margin: 0 auto;
+  padding: 72px 0 80px;
+}
+
+/* Header */
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+
+  gap: 32px;
+
+  margin-bottom: 32px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+
+  color: var(--text-secondary);
+
+  font-size: 11px;
+  font-weight: 700;
+
+  letter-spacing: 0.16em;
+}
+
+h1 {
+  margin: 0;
+
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 600;
+
+  letter-spacing: -0.04em;
+}
+
+h2 {
+  margin: 4px 0 0;
+
+  font-size: 22px;
+  font-weight: 600;
+
+  letter-spacing: -0.02em;
+}
+
+.system-meta {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  margin-top: 12px;
+
+  color: var(--text-secondary);
+
+  font-size: 13px;
+}
+
+.separator {
+  color: var(--text-muted);
+}
+
+.header-status {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  gap: 10px;
+}
+
+.online-badge {
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  padding: 8px 12px;
+
+  border: 1px solid var(--border);
+  border-radius: 999px;
+
+  color: #baf6da;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  letter-spacing: 0.08em;
+
+  background: rgba(79, 220, 156, 0.08);
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: var(--success);
+
+  box-shadow: 0 0 12px rgba(101, 230, 173, 0.8);
+}
+
+.last-updated {
+  color: var(--text-muted);
+
+  font-size: 12px;
+}
+
+/* Glass */
+
+.glass-card {
+  position: relative;
+
+  overflow: hidden;
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.055),
+      rgba(255, 255, 255, 0.015)
+    ),
+    var(--panel);
+
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.22);
+
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.glass-card::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 24px;
+  right: 24px;
+
+  height: 1px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.28),
+    transparent
+  );
+}
+
+/* Metric cards */
+
+.metric-grid {
+  display: grid;
+
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+
+  gap: 16px;
+}
+
+.metric-card {
+  min-height: 220px;
+
+  padding: 24px;
+
+  transition:
+    transform 180ms ease,
+    background 180ms ease,
+    border-color 180ms ease;
+}
+
+.metric-card:hover {
+  transform: translateY(-3px);
+
+  border-color: rgba(255, 255, 255, 0.17);
+
+  background: var(--panel-hover);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-label {
+  color: var(--text-secondary);
+
+  font-size: 11px;
+  font-weight: 700;
+
+  letter-spacing: 0.14em;
+}
+
+.card-status {
+  color: var(--accent);
+
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: 0.12em;
+}
+
+.metric-value {
+  margin-top: 38px;
+
+  font-size: 46px;
+  font-weight: 500;
+
+  line-height: 1;
+
+  letter-spacing: -0.055em;
+}
+
+.uptime-value {
+  font-size: 32px;
+
+  letter-spacing: -0.04em;
+}
+
+.metric-detail {
+  margin-top: 14px;
+
+  color: var(--text-secondary);
+
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* Progress */
+
+.progress-track {
+  width: 100%;
+  height: 5px;
+
+  margin-top: 26px;
+
+  overflow: hidden;
+
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.progress-bar {
+  width: 0%;
+  height: 100%;
+
+  border-radius: inherit;
+
+  background: linear-gradient(90deg, #337dff, #63b5ff);
+
+  box-shadow: 0 0 14px rgba(77, 163, 255, 0.45);
+
+  transition: width 500ms ease;
+}
+
+/* GPU */
+
+.gpu-card {
+  margin-top: 16px;
+
+  min-height: 150px;
+
+  padding: 26px;
+}
+
+.gpu-empty {
+  margin-top: 28px;
+
+  color: var(--text-secondary);
+
+  font-size: 16px;
+}
+
+.gpu-name {
+  margin-top: 24px;
+
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.gpu-stats {
+  display: flex;
+
+  gap: 28px;
+
+  margin-top: 16px;
+
+  color: var(--text-secondary);
+
+  font-size: 13px;
+}
+
+/* Health */
+
+.health-card {
+  margin-top: 16px;
+
+  padding: 28px;
+}
+
+.section-header {
+  margin-bottom: 26px;
+}
+
+.health-grid {
+  display: grid;
+
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  gap: 12px;
+}
+
+.health-item {
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+
+  min-height: 72px;
+
+  padding: 16px 18px;
+
+  border: 1px solid rgba(255, 255, 255, 0.07);
+
+  border-radius: 17px;
+
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.health-dot {
+  flex: 0 0 auto;
+
+  width: 9px;
+  height: 9px;
+
+  border-radius: 50%;
+
+  background: var(--success);
+
+  box-shadow: 0 0 12px rgba(101, 230, 173, 0.5);
+}
+
+.health-item div {
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.health-item strong {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.health-item span:last-child {
+  color: var(--text-secondary);
+
+  font-size: 11px;
+}
+
+.health-item.warning .health-dot {
+  background: var(--warning);
+
+  box-shadow: 0 0 12px rgba(255, 196, 107, 0.5);
+}
+
+.health-item.danger .health-dot {
+  background: var(--danger);
+
+  box-shadow: 0 0 12px rgba(255, 111, 125, 0.5);
+}
+
+/* Responsive */
+
+@media (max-width: 900px) {
+  .metric-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .dashboard {
+    width: min(100% - 28px, 1180px);
+
+    padding-top: 36px;
+  }
+
+  .dashboard-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .header-status {
+    align-items: flex-start;
+  }
+
+  .metric-grid,
+  .health-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.services-card {
+  margin-top: 16px;
+  padding: 28px;
+}
+
+.services-card .section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.service-count {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.service-list {
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+.service-row {
+  display: grid;
+
+  grid-template-columns:
+    minmax(140px, 1.4fr)
+    minmax(120px, 1fr)
+    100px
+    80px;
+
+  align-items: center;
+
+  gap: 16px;
+
+  padding: 15px 18px;
+
+  border: 1px solid rgba(255, 255, 255, 0.06);
+
+  border-radius: 15px;
+
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.service-name {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.service-process,
+.service-address,
+.service-pid {
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.service-address {
+  font-family: "SFMono-Regular", Consolas, monospace;
+}
+
+.service-port {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: fit-content;
+
+  padding: 5px 9px;
+
+  border-radius: 8px;
+
+  color: var(--accent);
+
+  background: var(--accent-soft);
+
+  font-family: "SFMono-Regular", Consolas, monospace;
+
+  font-size: 11px;
+}
+
+.service-empty {
+  padding: 20px 0;
+
+  color: var(--text-secondary);
+
+  font-size: 13px;
+}
+
+@media (max-width: 700px) {
+  .service-row {
+    grid-template-columns: 1fr auto;
+  }
+
+  .service-process,
+  .service-pid {
+    display: none;
+  }
+}
