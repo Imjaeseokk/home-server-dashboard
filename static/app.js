@@ -285,9 +285,10 @@ function renderRootNode(root) {
     toggle.className = "tree-toggle";
     toggle.textContent = root.available ? "▶" : "—";
 
-    const icon = document.createElement("span");
+    const icon = document.createElement("img");
     icon.className = "tree-icon";
-    icon.textContent = "▣";
+    icon.alt = "";
+    icon.src = "/static/icons/folder.svg";
 
     const name = document.createElement("span");
     name.className = "tree-name";
@@ -334,6 +335,11 @@ function renderRootNode(root) {
 
         toggle.textContent =
             willOpen ? "▼" : "▶";
+        // 추가: root 폴더 open / close 아이콘 변경
+
+        icon.src = willOpen
+            ? "/static/icons/folder-open.svg"
+            : "/static/icons/folder.svg";
     });
 }
 
@@ -418,8 +424,10 @@ function renderFileNode(
     const toggle = document.createElement("span");
     toggle.className = "tree-toggle";
 
-    const icon = document.createElement("span");
+    const icon = document.createElement("img");
     icon.className = "tree-icon";
+    icon.alt = "";
+    icon.src = getFileIcon(item, false);
 
     const name = document.createElement("span");
     name.className = "tree-name";
@@ -428,12 +436,11 @@ function renderFileNode(
     const isDirectory =
         item.type === "directory";
 
+    // 초기 상태 아이콘/토글
     if (isDirectory) {
         toggle.textContent = "▶";
-        icon.textContent = "▸";
     } else {
         toggle.textContent = "";
-        icon.textContent = "·";
     }
 
     row.append(toggle, icon, name);
@@ -478,6 +485,9 @@ function renderFileNode(
 
         toggle.textContent =
             willOpen ? "▼" : "▶";
+
+        // 폴더 open / close 아이콘 변경
+        icon.src = getFileIcon(item, willOpen);
     });
 }
 
@@ -559,6 +569,153 @@ function escapeHtml(value) {
         .replaceAll(">", "&gt;")
         .replaceAll('"', "&quot;")
         .replaceAll("'", "&#039;");
+}
+
+
+
+
+
+// File Tree Icon Helper
+function getFileIcon(item, isOpen = false) {
+    const name = item.name;
+    const lower = name.toLowerCase();
+
+    // -----------------------------
+    // 1. Directory name mapping
+    // -----------------------------
+    if (item.type === "directory") {
+        const folderIcons = {
+            ".github": "folder-github",
+            ".vscode": "folder-vscode",
+            "app": "folder-src",
+            "src": "folder-src",
+            "static": "folder-public",
+            "public": "folder-public",
+            "docs": "folder-docs",
+            "doc": "folder-docs",
+            "tests": "folder-test",
+            "test": "folder-test",
+            "images": "folder-images",
+            "image": "folder-images",
+            "assets": "folder-images",
+            "data": "folder-database",
+            "database": "folder-database",
+            "db": "folder-database",
+            "node_modules": "folder-node",
+            "venv": "folder-python",
+            ".venv": "folder-python",
+            "__pycache__": "folder-python",
+            "config": "folder-config",
+            "configs": "folder-config",
+            "scripts": "folder-scripts",
+            "logs": "folder-log",
+            "log": "folder-log",
+            "backup": "folder-backup",
+            "backups": "folder-backup",
+        };
+
+        const base = folderIcons[lower];
+
+        if (base) {
+            const openCandidate = `/static/icons/${base}-open.svg`;
+
+            if (isOpen) {
+                return openCandidate;
+            }
+
+            return `/static/icons/${base}.svg`;
+        }
+
+        return isOpen
+            ? "/static/icons/folder-open.svg"
+            : "/static/icons/folder.svg";
+    }
+
+    // -----------------------------
+    // 2. Exact filename mapping
+    // -----------------------------
+    const exactFileIcons = {
+        "dockerfile": "docker",
+        ".gitignore": "git",
+        ".gitattributes": "git",
+        ".gitmodules": "git",
+        "requirements.txt": "python",
+        "package.json": "nodejs",
+        "package-lock.json": "nodejs",
+        "pyproject.toml": "python",
+        "readme.md": "readme",
+        "license": "license",
+        "license.md": "license",
+        "makefile": "makefile",
+    };
+
+    if (exactFileIcons[lower]) {
+        return `/static/icons/${exactFileIcons[lower]}.svg`;
+    }
+
+    // -----------------------------
+    // 3. Extension mapping
+    // -----------------------------
+    const extensionIcons = {
+        "py": "python",
+        "js": "javascript",
+        "mjs": "javascript",
+        "cjs": "javascript",
+        "ts": "typescript",
+        "tsx": "react_ts",
+        "jsx": "react",
+        "html": "html",
+        "htm": "html",
+        "css": "css",
+        "scss": "sass",
+        "sass": "sass",
+        "json": "json",
+        "yaml": "yaml",
+        "yml": "yaml",
+        "md": "markdown",
+        "txt": "document",
+        "log": "log",
+        "xml": "xml",
+        "csv": "table",
+        "sql": "database",
+        "sh": "console",
+        "bash": "console",
+        "ps1": "powershell",
+        "bat": "console",
+        "cmd": "console",
+        "ini": "settings",
+        "toml": "settings",
+        "env": "tune",
+        "png": "image",
+        "jpg": "image",
+        "jpeg": "image",
+        "gif": "image",
+        "svg": "svg",
+        "webp": "image",
+        "pdf": "pdf",
+        "zip": "zip",
+        "tar": "zip",
+        "gz": "zip",
+        "7z": "zip",
+        "db": "database",
+        "sqlite": "database",
+        "sqlite3": "database",
+    };
+
+    const extension = lower.includes(".")
+        ? lower.split(".").pop()
+        : "";
+
+    const iconName = extensionIcons[extension];
+
+    if (iconName) {
+        return `/static/icons/${iconName}.svg`;
+    }
+
+    // -----------------------------
+    // 4. Fallback
+    // -----------------------------
+    return "/static/icons/file.svg";
 }
 
 

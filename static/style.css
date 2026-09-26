@@ -731,3 +731,22 @@ h2 {
         grid-template-columns: 1fr;
     }
 }
+
+.tree-icon {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 18px;
+    margin-right: 6px;
+    object-fit: contain;
+}
+
+
+
+
+
+
+
+
+
+
+
