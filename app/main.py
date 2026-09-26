@@ -80,7 +80,7 @@ def get_file_roots():
     
     
 @app.get("/api/files")
-def get_files(root: str):
+def get_files(root: str, subpath: str = ""):
     root_info = FILE_ROOTS.get(root)
 
     if root_info is None:
@@ -89,28 +89,57 @@ def get_files(root: str):
             detail="Unknown file root",
         )
 
-    root_path = root_info["path"]
+    root_path = root_info["path"].resolve()
+    target_path = (root_path / subpath).resolve()
 
-    if not root_path.exists() or not root_path.is_dir():
+    # 허용된 root 바깥으로 나가는 것을 방지
+    try:
+        target_path.relative_to(root_path)
+    except ValueError:
+        raise HTTPException(
+            status_code=403,
+            detail="Access outside the allowed root is not permitted",
+        )
+
+    if not target_path.exists():
         raise HTTPException(
             status_code=404,
-            detail="File root is not available",
+            detail="Path does not exist",
+        )
+
+    if not target_path.is_dir():
+        raise HTTPException(
+            status_code=400,
+            detail="Path is not a directory",
         )
 
     items = []
 
     try:
-        for entry in root_path.iterdir():
-            stat = entry.stat()
+        for entry in target_path.iterdir():
+            relative_path = entry.relative_to(root_path)
 
-            items.append({
-                "name": entry.name,
-                "type": "directory" if entry.is_dir() else "file",
-                "size": stat.st_size if entry.is_file() else None,
-                "modified": datetime.fromtimestamp(
-                    stat.st_mtime
-                ).isoformat(),
-            })
+            try:
+                stat = entry.stat()
+
+                items.append({
+                    "name": entry.name,
+                    "subpath": str(relative_path),
+                    "type": "directory" if entry.is_dir() else "file",
+                    "size": stat.st_size if entry.is_file() else None,
+                    "modified": datetime.fromtimestamp(
+                        stat.st_mtime
+                    ).isoformat(),
+                })
+
+            except (PermissionError, OSError):
+                items.append({
+                    "name": entry.name,
+                    "subpath": str(relative_path),
+                    "type": "unknown",
+                    "size": None,
+                    "modified": None,
+                })
 
     except PermissionError:
         raise HTTPException(
@@ -127,6 +156,7 @@ def get_files(root: str):
 
     return {
         "root": root,
-        "path": str(root_path),
+        "subpath": subpath,
+        "path": str(target_path),
         "items": items,
     }
