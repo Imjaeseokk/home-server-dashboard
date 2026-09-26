@@ -21,6 +21,22 @@ app.mount(
     name="static",
 )
 
+FILE_ROOTS = {
+    "applications": {
+        "name": "Applications",
+        "path": Path("/home/jaeseokk/apps"),
+    },
+    "server_data": {
+        "name": "Server Data",
+        "path": Path("/srv"),
+    },
+    "large_data": {
+        "name": "Large Data",
+        "path": Path("/data"),
+    },
+}
+
+
 @app.get("/", include_in_schema=False)
 def dashboard():
     return FileResponse(STATIC_DIR / "index.html")
@@ -39,4 +55,22 @@ def system_metrics():
 def services():
     return {
         "services": get_listening_services()
+    }
+    
+@app.get("/api/files/roots")
+def get_file_roots():
+    roots = []
+    
+    for root_id, info in FILE_ROOTS.items():
+        path = info["path"]
+        
+        roots.append({
+            "id": root_id,
+            "name": info["name"],
+            "path": str(path),
+            "available": path.exists() and path.is_dir(),
+        })
+        
+    return {
+        "roots": roots,
     }
