@@ -1,6 +1,9 @@
+from datetime import datetime
+
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
+from fastapi import HTTPException
 
 from pathlib import Path
 
@@ -73,4 +76,57 @@ def get_file_roots():
         
     return {
         "roots": roots,
+    }
+    
+    
+@app.get("/api/files")
+def get_files(root: str):
+    root_info = FILE_ROOTS.get(root)
+
+    if root_info is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Unknown file root",
+        )
+
+    root_path = root_info["path"]
+
+    if not root_path.exists() or not root_path.is_dir():
+        raise HTTPException(
+            status_code=404,
+            detail="File root is not available",
+        )
+
+    items = []
+
+    try:
+        for entry in root_path.iterdir():
+            stat = entry.stat()
+
+            items.append({
+                "name": entry.name,
+                "type": "directory" if entry.is_dir() else "file",
+                "size": stat.st_size if entry.is_file() else None,
+                "modified": datetime.fromtimestamp(
+                    stat.st_mtime
+                ).isoformat(),
+            })
+
+    except PermissionError:
+        raise HTTPException(
+            status_code=403,
+            detail="Permission denied",
+        )
+
+    items.sort(
+        key=lambda item: (
+            item["type"] != "directory",
+            item["name"].lower(),
+        )
+    )
+
+    return {
+        "root": root,
+        "path": str(root_path),
+        "items": items,
     }
