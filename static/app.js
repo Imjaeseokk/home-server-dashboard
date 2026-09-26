@@ -321,13 +321,13 @@ function renderRootNode(root) {
         const willOpen = children.hidden;
 
         if (willOpen && !loaded) {
-            await loadDirectory(
+            const success = await loadDirectory(
                 root.id,
                 "",
                 children
             );
 
-            loaded = true;
+            loaded = success;
         }
 
         children.hidden = !willOpen;
@@ -342,7 +342,6 @@ async function loadDirectory(
     subpath,
     container
 ) {
-
     container.innerHTML = `
         <div class="tree-loading">
             Loading...
@@ -374,7 +373,7 @@ async function loadDirectory(
                 </div>
             `;
 
-            return;
+            return true;
         }
 
         for (const item of data.items) {
@@ -385,6 +384,8 @@ async function loadDirectory(
                 container
             );
         }
+
+        return true;
 
     } catch (error) {
         console.error(
@@ -397,6 +398,8 @@ async function loadDirectory(
                 Unable to read directory
             </div>
         `;
+
+        return false;
     }
 }
 
@@ -462,13 +465,13 @@ function renderFileNode(
         const willOpen = children.hidden;
 
         if (willOpen && !loaded) {
-            await loadDirectory(
-                root.id,
-                "",
+            const success = await loadDirectory(
+                rootId,
+                item.subpath,
                 children
             );
 
-            loaded = true;
+            loaded = success;
         }
 
         children.hidden = !willOpen;
