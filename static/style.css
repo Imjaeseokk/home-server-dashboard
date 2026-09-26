@@ -578,3 +578,156 @@ h2 {
     display: none;
   }
 }
+
+.filesystem-section {
+    margin-top: 24px;
+    padding: 24px;
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+
+    background: rgba(255, 255, 255, 0.035);
+    backdrop-filter: blur(14px);
+}
+
+.filesystem-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 20px;
+}
+
+.filesystem-header h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.filesystem-header p {
+    margin: 6px 0 0;
+    font-size: 13px;
+    opacity: 0.55;
+}
+
+.filesystem-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(240px, 1fr);
+    gap: 16px;
+}
+
+.filesystem-tree,
+.filesystem-detail {
+    min-height: 360px;
+
+    padding: 16px;
+
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 14px;
+
+    background: rgba(0, 0, 0, 0.12);
+}
+
+.filesystem-tree {
+    overflow-x: auto;
+}
+
+.tree-node {
+    font-size: 14px;
+}
+
+.tree-node-row {
+    display: flex;
+    align-items: center;
+
+    min-height: 32px;
+    padding: 3px 8px;
+
+    border-radius: 7px;
+
+    cursor: pointer;
+    user-select: none;
+}
+
+.tree-node-row:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.tree-toggle {
+    width: 20px;
+    flex: 0 0 20px;
+
+    text-align: center;
+    opacity: 0.6;
+}
+
+.tree-icon {
+    width: 24px;
+    flex: 0 0 24px;
+}
+
+.tree-name {
+    white-space: nowrap;
+}
+
+.tree-children {
+    margin-left: 20px;
+}
+
+.tree-loading,
+.tree-error,
+.tree-empty {
+    padding: 6px 8px 6px 28px;
+
+    font-size: 12px;
+    opacity: 0.5;
+}
+
+.tree-error {
+    opacity: 0.8;
+}
+
+.file-detail-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 100%;
+
+    font-size: 13px;
+    opacity: 0.4;
+}
+
+.file-detail-title {
+    margin-bottom: 18px;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    word-break: break-all;
+}
+
+.file-detail-row {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+
+    padding: 8px 0;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
+    font-size: 13px;
+}
+
+.file-detail-label {
+    opacity: 0.45;
+}
+
+.file-detail-value {
+    word-break: break-all;
+}
+
+@media (max-width: 800px) {
+    .filesystem-layout {
+        grid-template-columns: 1fr;
+    }
+}
