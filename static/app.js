@@ -283,7 +283,10 @@ function renderRootNode(root) {
 
     const toggle = document.createElement("span");
     toggle.className = "tree-toggle";
-    toggle.textContent = root.available ? "▶" : "—";
+
+    const toggleIcon = document.createElement("img");
+    toggleIcon.className = "tree-toggle-icon";
+    toggleIcon.alt = "";
 
     const icon = document.createElement("img");
     icon.className = "tree-icon";
@@ -293,6 +296,11 @@ function renderRootNode(root) {
     const name = document.createElement("span");
     name.className = "tree-name";
     name.textContent = root.name;
+
+    if (root.available) {
+        toggleIcon.src = "/static/icons/keyboard_arrow_right_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg";
+        toggle.appendChild(toggleIcon);
+    }
 
     row.append(toggle, icon, name);
 
@@ -333,9 +341,9 @@ function renderRootNode(root) {
 
         children.hidden = !willOpen;
 
-        toggle.textContent =
-            willOpen ? "▼" : "▶";
-        // 추가: root 폴더 open / close 아이콘 변경
+        toggleIcon.src = willOpen
+            ? "/static/icons/keyboard_arrow_down_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg"
+            : "/static/icons/keyboard_arrow_right_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg";
 
         icon.src = willOpen
             ? "/static/icons/folder-open.svg"
@@ -424,6 +432,10 @@ function renderFileNode(
     const toggle = document.createElement("span");
     toggle.className = "tree-toggle";
 
+    const toggleIcon = document.createElement("img");
+    toggleIcon.className = "tree-toggle-icon";
+    toggleIcon.alt = "";
+
     const icon = document.createElement("img");
     icon.className = "tree-icon";
     icon.alt = "";
@@ -436,11 +448,10 @@ function renderFileNode(
     const isDirectory =
         item.type === "directory";
 
-    // 초기 상태 아이콘/토글
+    // 초기 상태
     if (isDirectory) {
-        toggle.textContent = "▶";
-    } else {
-        toggle.textContent = "";
+        toggleIcon.src = "/static/icons/keyboard_arrow_right_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg";
+        toggle.appendChild(toggleIcon);
     }
 
     row.append(toggle, icon, name);
@@ -483,10 +494,10 @@ function renderFileNode(
 
         children.hidden = !willOpen;
 
-        toggle.textContent =
-            willOpen ? "▼" : "▶";
+        toggleIcon.src = willOpen
+            ? "/static/icons/keyboard_arrow_down_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg"
+            : "/static/icons/keyboard_arrow_right_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg";
 
-        // 폴더 open / close 아이콘 변경
         icon.src = getFileIcon(item, willOpen);
     });
 }
