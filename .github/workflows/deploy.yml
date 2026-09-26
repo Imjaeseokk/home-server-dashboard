@@ -1,0 +1,49 @@
+name: Deploy to Home Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Update application
+        run: |
+          cd /home/jaeseokk/apps/home-server-dashboard
+
+          git fetch origin
+          git reset --hard origin/main
+
+      - name: Install dependencies
+        run: |
+          cd /home/jaeseokk/apps/home-server-dashboard
+
+          ./venv/bin/python -m pip install \
+            -r requirements.txt
+
+      - name: Restart service
+        run: |
+          sudo -n systemctl restart server-dashboard.service
+
+      - name: Check service
+        run: |
+          sudo -n systemctl is-active server-dashboard.service
+
+      - name: Health check
+        run: |
+          for i in {1..10}; do
+            if curl -fsS http://127.0.0.1:8000/api/health; then
+              echo
+              echo "Deployment successful"
+              exit 0
+            fi
+
+            echo "Waiting for server..."
+            sleep 2
+          done
+
+          echo "Health check failed"
+          exit 1
