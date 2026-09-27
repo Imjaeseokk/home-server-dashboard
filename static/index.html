@@ -4,18 +4,84 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Jaeseokk Server Dashboard</title>
+    <title>This is my Server</title>
 
     <link rel="stylesheet" href="/static/style.css" />
   </head>
 
   <body>
-    <main class="dashboard">
+  <!-- Background -->
+  <div class="background-image"></div>
+  <div class="background-overlay"></div>
+
+  <!-- Dashboard Stage -->
+  <div class="dashboard-stage">
+
+    <!-- Floating Sidebar -->
+    <aside class="sidebar">
+      <button
+        class="sidebar-button active"
+        data-view="home"
+        aria-label="Home"
+        title="Home"
+      >
+        <img
+          src="/static/icons/sidebar/home.svg"
+          alt=""
+          class="sidebar-icon"
+        />
+      </button>
+
+      <button
+        class="sidebar-button"
+        data-view="resources"
+        aria-label="Resources"
+        title="Resources"
+      >
+        <img
+          src="/static/icons/sidebar/developer-board.svg"
+          alt=""
+          class="sidebar-icon"
+        />
+      </button>
+
+      <button
+        class="sidebar-button"
+        data-view="filesystem"
+        aria-label="File System"
+        title="File System"
+      >
+        <img
+          src="/static/icons/sidebar/folder.svg"
+          alt=""
+          class="sidebar-icon"
+        />
+      </button>
+
+      <button
+        class="sidebar-button"
+        data-view="services"
+        aria-label="Services"
+        title="Services"
+      >
+        <img
+          src="/static/icons/sidebar/list.svg"
+          alt=""
+          class="sidebar-icon"
+        />
+      </button>
+    </aside>
+
+
+    <!-- Main Glass Dashboard -->
+    <main class="dashboard-shell">
+
+      <!-- Header -->
       <header class="dashboard-header">
         <div>
-          <p class="eyebrow">HOME SERVER</p>
+          <p class="eyebrow"></p>
 
-          <h1>Jaeseokk Server Dashboard</h1>
+          <h1>Hi this is my server</h1>
 
           <div class="system-meta">
             <span id="hostname">---</span>
@@ -30,168 +96,250 @@
             ONLINE
           </div>
 
-          <span id="last-updated" class="last-updated"> Last updated — </span>
+          <span id="last-updated" class="last-updated">
+            Last updated —
+          </span>
         </div>
       </header>
 
-      <section class="metric-grid">
-        <!-- CPU -->
 
-        <article class="glass-card metric-card">
-          <div class="card-header">
-            <span class="card-label"> CPU </span>
+      <!-- Views -->
+      <div class="dashboard-views">
 
-            <span class="card-status"> LIVE </span>
-          </div>
-
-          <div id="cpu-value" class="metric-value">--%</div>
-
-          <div class="progress-track">
-            <div id="cpu-progress" class="progress-bar"></div>
-          </div>
-
-          <div id="cpu-detail" class="metric-detail">Loading...</div>
-        </article>
-
-        <!-- Memory -->
-
-        <article class="glass-card metric-card">
-          <div class="card-header">
-            <span class="card-label"> MEMORY </span>
-          </div>
-
-          <div id="memory-value" class="metric-value">--%</div>
-
-          <div class="progress-track">
-            <div id="memory-progress" class="progress-bar"></div>
-          </div>
-
-          <div id="memory-detail" class="metric-detail">Loading...</div>
-        </article>
-
-        <!-- Disk -->
-
-        <article class="glass-card metric-card">
-          <div class="card-header">
-            <span class="card-label"> DISK </span>
-          </div>
-
-          <div id="disk-value" class="metric-value">--%</div>
-
-          <div class="progress-track">
-            <div id="disk-progress" class="progress-bar"></div>
-          </div>
-
-          <div id="disk-detail" class="metric-detail">Loading...</div>
-        </article>
-
-        <!-- Uptime -->
-
-        <article class="glass-card metric-card">
-          <div class="card-header">
-            <span class="card-label"> UPTIME </span>
-          </div>
-
-          <div id="uptime-value" class="metric-value uptime-value">---</div>
-
-          <div class="metric-detail">Since last system boot</div>
-        </article>
-      </section>
-
-      <!-- GPU -->
-
-      <section class="glass-card gpu-card">
-        <div class="card-header">
-          <span class="card-label"> GPU </span>
-        </div>
-
-        <div id="gpu-content">
-          <div class="gpu-empty">Checking GPU...</div>
-        </div>
-      </section>
-
-      <section class="glass-card services-card">
-        <div class="section-header">
-          <div>
-            <p class="eyebrow">NETWORK</p>
-
-            <h2>Running Services</h2>
-          </div>
-
-          <span id="service-count" class="service-count"> 0 listening </span>
-        </div>
-
-        <div id="service-list" class="service-list">
-          <div class="service-empty">Checking listening ports...</div>
-        </div>
-      </section>
-
-      <!-- Daily Health -->
-
-      <section class="glass-card health-card">
-        <div class="section-header">
-          <div>
-            <p class="eyebrow">DAILY CHECK</p>
-
-            <h2>System Health</h2>
-          </div>
-        </div>
-
-        <div class="health-grid">
-          <div id="health-cpu" class="health-item">
-            <span class="health-dot"></span>
-
+        <!-- HOME -->
+        <section
+          class="dashboard-view active"
+          data-view="home"
+        >
+          <div class="view-heading">
             <div>
-              <strong>CPU</strong>
-              <span>Checking...</span>
+              <p class="eyebrow">OVERVIEW</p>
+              <h2>System Overview</h2>
             </div>
           </div>
 
-          <div id="health-memory" class="health-item">
-            <span class="health-dot"></span>
-
-            <div>
-              <strong>Memory</strong>
-              <span>Checking...</span>
-            </div>
-          </div>
-
-          <div id="health-disk" class="health-item">
-            <span class="health-dot"></span>
-
-            <div>
-              <strong>Disk</strong>
-              <span>Checking...</span>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section class="filesystem-section">
-          <div class="filesystem-header">
+          <section class="glass-card health-card">
+            <div class="section-header">
               <div>
-                  <h2>File System</h2>
-                  <p>Read-only server filesystem browser</p>
+                <p class="eyebrow">DAILY CHECK</p>
+                <h2>System Health</h2>
               </div>
+            </div>
+
+            <div class="health-grid">
+
+              <div id="health-cpu"  class="health-item surface-item">
+                <span class="health-dot"></span>
+
+                <div>
+                  <strong>CPU</strong>
+                  <span>Checking...</span>
+                </div>
+              </div>
+
+              <div id="health-memory"  class="health-item surface-item">
+                <span class="health-dot"></span>
+
+                <div>
+                  <strong>Memory</strong>
+                  <span>Checking...</span>
+                </div>
+              </div>
+
+              <div id="health-disk"  class="health-item surface-item">
+                <span class="health-dot"></span>
+
+                <div>
+                  <strong>Disk</strong>
+                  <span>Checking...</span>
+                </div>
+              </div>
+
+            </div>
+          </section>
+        </section>
+
+
+        <!-- RESOURCES -->
+        <section
+          class="dashboard-view"
+          data-view="resources"
+        >
+          <div class="view-heading">
+            <div>
+              <p class="eyebrow">SYSTEM</p>
+              <h2>Resources</h2>
+            </div>
           </div>
 
-          <div class="filesystem-layout">
+          <section class="metric-grid">
+
+            <!-- CPU -->
+            <article class="glass-card metric-card">
+              <div class="card-header">
+                <span class="card-label">CPU</span>
+                <span class="card-status">LIVE</span>
+              </div>
+
+              <div id="cpu-value" class="metric-value">--%</div>
+
+              <div class="progress-track">
+                <div id="cpu-progress" class="progress-bar"></div>
+              </div>
+
+              <div id="cpu-detail" class="metric-detail">
+                Loading...
+              </div>
+            </article>
+
+
+            <!-- Memory -->
+            <article class="glass-card metric-card">
+              <div class="card-header">
+                <span class="card-label">MEMORY</span>
+              </div>
+
+              <div id="memory-value" class="metric-value">--%</div>
+
+              <div class="progress-track">
+                <div id="memory-progress" class="progress-bar"></div>
+              </div>
+
+              <div id="memory-detail" class="metric-detail">
+                Loading...
+              </div>
+            </article>
+
+
+            <!-- Disk -->
+            <article class="glass-card metric-card">
+              <div class="card-header">
+                <span class="card-label">DISK</span>
+              </div>
+
+              <div id="disk-value" class="metric-value">--%</div>
+
+              <div class="progress-track">
+                <div id="disk-progress" class="progress-bar"></div>
+              </div>
+
+              <div id="disk-detail" class="metric-detail">
+                Loading...
+              </div>
+            </article>
+
+
+            <!-- Uptime -->
+            <article class="glass-card metric-card">
+              <div class="card-header">
+                <span class="card-label">UPTIME</span>
+              </div>
+
               <div
-                  id="filesystemTree"
-                  class="filesystem-tree"
+                id="uptime-value"
+                class="metric-value uptime-value"
+              >
+                ---
+              </div>
+
+              <div class="metric-detail">
+                Since last system boot
+              </div>
+            </article>
+
+          </section>
+
+
+          <!-- GPU -->
+          <section class="glass-card gpu-card">
+            <div class="card-header">
+              <span class="card-label">GPU</span>
+            </div>
+
+            <div id="gpu-content">
+              <div class="gpu-empty">
+                Checking GPU...
+              </div>
+            </div>
+          </section>
+        </section>
+
+
+        <!-- FILE SYSTEM -->
+        <section
+          class="dashboard-view"
+          data-view="filesystem"
+        >
+          <div class="view-heading">
+            <div>
+              <p class="eyebrow">STORAGE</p>
+              <h2>File System</h2>
+              <p class="view-description">
+                Read-only server filesystem browser
+              </p>
+            </div>
+          </div>
+
+        <section class="glass-card filesystem-section">
+
+            <div class="filesystem-layout">
+
+              <div
+                id="filesystemTree"
+                class="filesystem-tree surface-item"
               ></div>
 
               <div
-                  id="filesystemDetail"
-                  class="filesystem-detail"
+                id="filesystemDetail"
+                class="filesystem-detail surface-item"
               >
-                  <div class="file-detail-empty">
-                      Select a file or directory
-                  </div>
+                <div class="file-detail-empty">
+                  Select a file or directory
+                </div>
               </div>
-          </div>
-      </section>
-    </main>
 
-    <script src="/static/app.js"></script>
-  </body>
+            </div>
+          </section>
+        </section>
+
+
+        <!-- SERVICES -->
+        <section
+          class="dashboard-view"
+          data-view="services"
+        >
+          <div class="view-heading">
+            <div>
+              <p class="eyebrow">NETWORK</p>
+              <h2>Running Services</h2>
+            </div>
+
+            <span
+              id="service-count"
+              class="service-count"
+            >
+              0 listening
+            </span>
+          </div>
+
+          <section class="glass-card services-card">
+
+            <div
+              id="service-list"
+              class="service-list"
+            >
+              <div class="service-empty">
+                Checking listening ports...
+              </div>
+            </div>
+
+          </section>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
 </html>

@@ -6,9 +6,35 @@ const cpuHistory = [];
 document.addEventListener(
     "DOMContentLoaded",
     () => {
+        initSidebarNavigation();
         loadFileRoots();
     }
 );
+
+function initSidebarNavigation() {
+  const buttons = document.querySelectorAll(".sidebar-button");
+  const views = document.querySelectorAll(".dashboard-view");
+
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const targetView = button.dataset.view;
+
+      buttons.forEach((item) => {
+        item.classList.toggle(
+          "active",
+          item === button
+        );
+      });
+
+      views.forEach((view) => {
+        view.classList.toggle(
+          "active",
+          view.dataset.view === targetView
+        );
+      });
+    });
+  });
+}
 
 async function fetchSystemMetrics() {
   const response = await fetch("/api/system");
@@ -26,6 +52,14 @@ function setProgress(id, value) {
   const safeValue = Math.min(Math.max(value, 0), 100);
 
   element.style.width = `${safeValue}%`;
+
+  element.classList.remove("warning", "danger");
+
+  if (safeValue >= 90) {
+    element.classList.add("danger");
+  } else if (safeValue >= 75) {
+    element.classList.add("warning");
+  }
 }
 
 function updateSystemInfo(data) {
@@ -215,7 +249,7 @@ function updateServices(data) {
     .map(
       (service) => `
 
-            <div class="service-row">
+            <div class="service-row surface-item">
 
                 <div class="service-name">
                     ${service.name}
@@ -728,6 +762,4 @@ function getFileIcon(item, isOpen = false) {
     // -----------------------------
     return "/static/icons/file.svg";
 }
-
-
 
