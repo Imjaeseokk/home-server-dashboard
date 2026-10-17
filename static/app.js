@@ -2,6 +2,7 @@ const REFRESH_INTERVAL_MS = 5000;
 
 const CPU_MA_WINDOW = 5;
 const cpuHistory = [];
+let lastServicesSnapshot = null;
 
 document.addEventListener(
     "DOMContentLoaded",
@@ -33,7 +34,7 @@ function initSidebarNavigation() {
         );
       });
 
-      document.querySelector(".dashboard-shell").scrollTop = 0;
+      document.querySelector(".dashboard-scroll").scrollTop = 0;
     });
   });
 }
@@ -233,6 +234,14 @@ function updateServices(data) {
   const services = data.services;
 
   const container = document.getElementById("service-list");
+  const snapshot = JSON.stringify(services);
+
+  if (snapshot === lastServicesSnapshot) {
+    return;
+  }
+
+  const scrollViewport = document.querySelector(".dashboard-scroll");
+  const scrollTop = scrollViewport.scrollTop;
 
   document.getElementById("service-count").textContent =
     `${services.length} listening`;
@@ -244,6 +253,8 @@ function updateServices(data) {
             </div>
         `;
 
+    scrollViewport.scrollTop = scrollTop;
+    lastServicesSnapshot = snapshot;
     return;
   }
 
@@ -276,6 +287,10 @@ function updateServices(data) {
         `,
     )
     .join("");
+
+  // WebKit can reset an ancestor's scroll when its descendants are replaced.
+  scrollViewport.scrollTop = scrollTop;
+  lastServicesSnapshot = snapshot;
 }
 
 
