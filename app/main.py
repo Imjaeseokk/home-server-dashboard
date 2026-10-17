@@ -56,7 +56,10 @@ def is_hidden_filesystem_path(path: Path) -> bool:
 
 @app.get("/", include_in_schema=False)
 def dashboard():
-    return FileResponse(STATIC_DIR / "index.html")
+    return FileResponse(
+        STATIC_DIR / "index.html",
+        headers={"Cache-Control": "no-cache"},
+    )
 
 @app.get("/api/health")
 def health():
