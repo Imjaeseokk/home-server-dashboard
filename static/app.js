@@ -32,6 +32,8 @@ function initSidebarNavigation() {
           view.dataset.view === targetView
         );
       });
+
+      document.querySelector(".dashboard-shell").scrollTop = 0;
     });
   });
 }
@@ -551,21 +553,21 @@ function showFileDetail(item) {
 
         <div class="file-detail-row">
             <div class="file-detail-label">Path</div>
-            <div class="file-detail-value">
+            <div class="file-detail-value file-detail-code">
                 ${escapeHtml(item.path)}
             </div>
         </div>
 
         <div class="file-detail-row">
             <div class="file-detail-label">Size</div>
-            <div class="file-detail-value">
+            <div class="file-detail-value file-detail-code">
                 ${formatFileSize(item.size)}
             </div>
         </div>
 
         <div class="file-detail-row">
             <div class="file-detail-label">Modified</div>
-            <div class="file-detail-value">
+            <div class="file-detail-value file-detail-code">
                 ${formatModified(item.modified)}
             </div>
         </div>
