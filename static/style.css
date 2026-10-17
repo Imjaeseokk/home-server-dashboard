@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "Monoplex KR";
+  src: url("/static/fonts/MonoplexKR-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --bg: #161b1a;
 
@@ -18,6 +26,20 @@
   --danger: #d78f8f;
 
   --radius: 20px;
+
+  /* Typography roles from the blog's DESIGN-RULES.md. */
+  --font-sans: "Pretendard Variable", Pretendard, system-ui, sans-serif;
+  --font-mono: "Monoplex KR", monospace;
+  --body-size: 16px;
+  --meta-size: 12px;
+  --support-size: 14px;
+  --item-size: 20px;
+  --title-size: clamp(28px, 3vw, 42px);
+  --section-size: clamp(22px, 2.2vw, 28px);
+  --title-leading: 1.3;
+  --title-tracking: -0.035em;
+  --section-leading: 1.4;
+  --section-tracking: -0.025em;
 }
 
 * {
@@ -27,20 +49,20 @@
 html,
 body {
   margin: 0;
-  min-height: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 body {
-  min-height: 100vh;
+  height: 100vh;
+  height: 100dvh;
 
   color: var(--text);
 
-  font-family:
-    Inter,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
+  font-family: var(--font-sans);
+  font-size: var(--body-size);
+  font-weight: 400;
+  line-height: 1.45;
 
   background: var(--bg);
 }
@@ -96,35 +118,22 @@ body::before {
   margin-bottom: 26px;
 }
 
-.eyebrow {
-  margin: 0 0 6px;
-
-  color: var(--text-muted);
-
-  font-size: 10px;
-  font-weight: 600;
-
-  letter-spacing: 0.18em;
-}
-
 h1 {
   margin: 0;
 
-  font-size: clamp(24px, 2.3vw, 32px);
-  font-weight: 500;
-
-  line-height: 1.15;
-
-  letter-spacing: -0.035em;
+  font-size: var(--title-size);
+  font-weight: 700;
+  line-height: var(--title-leading);
+  letter-spacing: var(--title-tracking);
 }
 
 h2 {
   margin: 4px 0 0;
 
-  font-size: 22px;
-  font-weight: 600;
-
-  letter-spacing: -0.02em;
+  font-size: var(--section-size);
+  font-weight: 700;
+  line-height: var(--section-leading);
+  letter-spacing: var(--section-tracking);
 }
 
 .system-meta {
@@ -137,7 +146,7 @@ h2 {
 
   color: var(--text-secondary);
 
-  font-size: 12px;
+  font-size: var(--meta-size);
 }
 
 .separator {
@@ -165,8 +174,8 @@ h2 {
 
   color: rgba(255, 255, 255, 0.72);
 
-  font-size: 10px;
-  font-weight: 600;
+  font-size: var(--meta-size);
+  font-weight: 400;
 
   letter-spacing: 0.08em;
 
@@ -188,7 +197,7 @@ h2 {
 .last-updated {
   color: var(--text-muted);
 
-  font-size: 11px;
+  font-size: var(--meta-size);
 }
 
 /* Glass */
@@ -257,8 +266,8 @@ h2 {
 .card-label {
   color: var(--text-secondary);
 
-  font-size: 11px;
-  font-weight: 700;
+  font-size: var(--meta-size);
+  font-weight: 400;
 
   letter-spacing: 0.14em;
 }
@@ -266,8 +275,8 @@ h2 {
 .card-status {
   color: var(--accent);
 
-  font-size: 9px;
-  font-weight: 700;
+  font-size: var(--meta-size);
+  font-weight: 400;
 
   letter-spacing: 0.12em;
 }
@@ -275,8 +284,10 @@ h2 {
 .metric-value {
   margin-top: 26px;
 
+  font-family: var(--font-mono);
   font-size: 38px;
-  font-weight: 500;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
 
   line-height: 1;
 
@@ -294,7 +305,7 @@ h2 {
 
   color: var(--text-secondary);
 
-  font-size: 11px;
+  font-size: var(--support-size);
   line-height: 1.45;
 }
 /* Progress */
@@ -379,8 +390,10 @@ h2 {
 .gpu-name {
   margin-top: 24px;
 
-  font-size: 24px;
-  font-weight: 500;
+  font-size: var(--item-size);
+  font-weight: 700;
+  line-height: var(--section-leading);
+  letter-spacing: var(--section-tracking);
 }
 
 .gpu-stats {
@@ -392,7 +405,7 @@ h2 {
 
   color: var(--text-secondary);
 
-  font-size: 13px;
+  font-size: var(--support-size);
 }
 
 /* Health */
@@ -446,14 +459,16 @@ h2 {
 }
 
 .health-item strong {
-  font-size: 13px;
-  font-weight: 600;
+  font-size: var(--item-size);
+  font-weight: 700;
+  line-height: var(--section-leading);
+  letter-spacing: var(--section-tracking);
 }
 
 .health-item span:last-child {
   color: var(--text-secondary);
 
-  font-size: 11px;
+  font-size: var(--support-size);
 }
 
 .health-item.warning .health-dot {
@@ -511,10 +526,11 @@ h2 {
 
 .service-count {
   color: var(--text-muted);
-  font-size: 12px;
+  font-size: var(--meta-size);
 }
 
 .service-list {
+  container-type: inline-size;
   display: flex;
   flex-direction: column;
 
@@ -538,19 +554,23 @@ h2 {
 }
 
 .service-name {
-  font-size: 13px;
-  font-weight: 600;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: var(--item-size);
+  font-weight: 700;
+  line-height: var(--section-leading);
+  letter-spacing: var(--section-tracking);
 }
 
 .service-process,
 .service-address,
 .service-pid {
   color: var(--text-secondary);
-  font-size: 12px;
+  font-size: var(--meta-size);
 }
 
 .service-address {
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: var(--font-mono);
 }
 
 .service-port {
@@ -568,9 +588,9 @@ h2 {
 
   background: var(--accent-soft);
 
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: var(--font-mono);
 
-  font-size: 11px;
+  font-size: var(--meta-size);
 }
 
 .service-empty {
@@ -578,10 +598,10 @@ h2 {
 
   color: var(--text-secondary);
 
-  font-size: 13px;
+  font-size: var(--support-size);
 }
 
-@media (max-width: 700px) {
+@container (max-width: 600px) {
   .service-row {
     grid-template-columns: 1fr auto;
   }
@@ -590,11 +610,6 @@ h2 {
   .service-pid {
     display: none;
   }
-}
-
-.filesystem-section {
-  margin-top: 0;
-  padding: 18px;
 }
 
 .filesystem-header {
@@ -608,23 +623,25 @@ h2 {
 .filesystem-header h2 {
     margin: 0;
     font-size: 20px;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .filesystem-header p {
     margin: 6px 0 0;
-    font-size: 13px;
+    font-size: var(--support-size);
     opacity: 0.55;
 }
 
 .filesystem-layout {
     display: grid;
+    width: 100%;
     grid-template-columns: minmax(0, 2fr) minmax(240px, 1fr);
     gap: 16px;
 }
 
 .filesystem-tree,
 .filesystem-detail {
+    min-width: 0;
     min-height: 360px;
 
     padding: 16px;
@@ -635,7 +652,7 @@ h2 {
 }
 
 .tree-node {
-    font-size: 14px;
+    font-size: var(--support-size);
 }
 
 .tree-node-row {
@@ -681,7 +698,7 @@ h2 {
 .tree-empty {
     padding: 6px 8px 6px 28px;
 
-    font-size: 12px;
+    font-size: var(--meta-size);
     opacity: 0.5;
 }
 
@@ -696,17 +713,19 @@ h2 {
 
     height: 100%;
 
-    font-size: 13px;
+    font-size: var(--support-size);
     opacity: 0.4;
 }
 
 .file-detail-title {
     margin-bottom: 18px;
 
-    font-size: 16px;
-    font-weight: 600;
+    font-size: var(--item-size);
+    font-weight: 700;
 
     word-break: break-all;
+    line-height: var(--section-leading);
+    letter-spacing: var(--section-tracking);
 }
 
 .file-detail-row {
@@ -717,7 +736,7 @@ h2 {
 
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 
-    font-size: 13px;
+    font-size: var(--support-size);
 }
 
 .file-detail-label {
@@ -816,6 +835,7 @@ h2 {
 
   width: 100%;
   height: 100vh;
+  height: 100dvh;
 
   padding: 40px;
 
@@ -836,8 +856,13 @@ h2 {
   min-width: 0;
   min-height: 0;
 
+  max-height: 100%;
   padding: 28px;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--text-muted) transparent;
 
   border: none; 
   border-radius: 30px;
@@ -1041,3 +1066,86 @@ h2 {
 
 
 
+
+/* Apply the same font to interactive UI and the same mono face to technical data. */
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+.last-updated,
+.service-count,
+.service-process,
+.service-address,
+.service-port,
+.service-pid,
+.tree-name,
+.file-detail-code {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+
+.view-description,
+.gpu-empty,
+.file-detail-value {
+  font-size: var(--support-size);
+}
+
+.file-detail-label {
+  font-size: var(--meta-size);
+}
+
+@media (max-width: 760px) {
+  :root {
+    --title-size: clamp(26px, 7vw, 36px);
+    --section-size: clamp(22px, 5.4vw, 28px);
+    --item-size: 18px;
+  }
+}
+
+/* Use the available screen below a horizontal menu on phones and small tablets. */
+@media (max-width: 800px), (max-width: 1000px) and (max-height: 500px) {
+  .dashboard-stage {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding:
+      max(12px, env(safe-area-inset-top))
+      max(12px, env(safe-area-inset-right))
+      max(12px, env(safe-area-inset-bottom))
+      max(12px, env(safe-area-inset-left));
+  }
+
+  .sidebar {
+    flex-direction: row;
+    align-self: center;
+    width: fit-content;
+    max-width: 100%;
+    padding: 8px 14px;
+  }
+
+  .sidebar-button {
+    width: 44px;
+    height: 44px;
+  }
+
+  .dashboard-shell {
+    flex: 1 1 0;
+    width: 100%;
+    height: auto;
+    aspect-ratio: auto;
+    padding: 20px;
+  }
+
+  .system-meta,
+  .gpu-stats {
+    flex-wrap: wrap;
+  }
+
+  .gpu-name {
+    overflow-wrap: anywhere;
+  }
+}

@@ -2,10 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
     <title>This is my Server</title>
 
+    <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
     <link rel="stylesheet" href="/static/style.css" />
   </head>
 
@@ -74,13 +75,11 @@
 
 
     <!-- Main Glass Dashboard -->
-    <main class="dashboard-shell">
+    <main class="dashboard-shell" tabindex="0" aria-label="Server dashboard">
 
       <!-- Header -->
       <header class="dashboard-header">
         <div>
-          <p class="eyebrow"></p>
-
           <h1>Hi this is my server</h1>
 
           <div class="system-meta">
@@ -113,7 +112,6 @@
         >
           <div class="view-heading">
             <div>
-              <p class="eyebrow">OVERVIEW</p>
               <h2>System Overview</h2>
             </div>
           </div>
@@ -121,7 +119,6 @@
           <section class="glass-card health-card">
             <div class="section-header">
               <div>
-                <p class="eyebrow">DAILY CHECK</p>
                 <h2>System Health</h2>
               </div>
             </div>
@@ -167,7 +164,6 @@
         >
           <div class="view-heading">
             <div>
-              <p class="eyebrow">SYSTEM</p>
               <h2>Resources</h2>
             </div>
           </div>
@@ -272,7 +268,6 @@
         >
           <div class="view-heading">
             <div>
-              <p class="eyebrow">STORAGE</p>
               <h2>File System</h2>
               <p class="view-description">
                 Read-only server filesystem browser
@@ -280,26 +275,23 @@
             </div>
           </div>
 
-        <section class="glass-card filesystem-section">
+          <div class="filesystem-layout">
 
-            <div class="filesystem-layout">
+            <div
+              id="filesystemTree"
+              class="filesystem-tree surface-item"
+            ></div>
 
-              <div
-                id="filesystemTree"
-                class="filesystem-tree surface-item"
-              ></div>
-
-              <div
-                id="filesystemDetail"
-                class="filesystem-detail surface-item"
-              >
-                <div class="file-detail-empty">
-                  Select a file or directory
-                </div>
+            <div
+              id="filesystemDetail"
+              class="filesystem-detail surface-item"
+            >
+              <div class="file-detail-empty">
+                Select a file or directory
               </div>
-
             </div>
-          </section>
+
+          </div>
         </section>
 
 
@@ -310,7 +302,6 @@
         >
           <div class="view-heading">
             <div>
-              <p class="eyebrow">NETWORK</p>
               <h2>Running Services</h2>
             </div>
 
