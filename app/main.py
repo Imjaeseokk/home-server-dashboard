@@ -39,6 +39,20 @@ FILE_ROOTS = {
     },
 }
 
+HIDDEN_FILESYSTEM_NAMES = frozenset({
+    "venv", "env", "node_modules", "__pycache__", "__pypackages__",
+})
+
+
+def is_hidden_filesystem_path(path: Path) -> bool:
+    """Exclude internal entries at every level of the filesystem browser."""
+    return any(
+        (part.startswith(".") and part not in {".", ".."})
+        or part.casefold() in HIDDEN_FILESYSTEM_NAMES
+        or part.casefold().endswith(".env")
+        for part in path.parts
+    )
+
 
 @app.get("/", include_in_schema=False)
 def dashboard():
@@ -89,17 +103,26 @@ def get_files(root: str, subpath: str = ""):
             detail="Unknown file root",
         )
 
+    if is_hidden_filesystem_path(Path(subpath)):
+        raise HTTPException(status_code=404, detail="Path does not exist")
+
     root_path = root_info["path"].resolve()
-    target_path = (root_path / subpath).resolve()
+    try:
+        target_path = (root_path / subpath).resolve()
+    except (OSError, RuntimeError):
+        raise HTTPException(status_code=404, detail="Path does not exist")
 
     # 허용된 root 바깥으로 나가는 것을 방지
     try:
-        target_path.relative_to(root_path)
+        relative_target = target_path.relative_to(root_path)
     except ValueError:
         raise HTTPException(
             status_code=403,
             detail="Access outside the allowed root is not permitted",
         )
+
+    if is_hidden_filesystem_path(relative_target):
+        raise HTTPException(status_code=404, detail="Path does not exist")
 
     if not target_path.exists():
         raise HTTPException(
@@ -118,6 +141,18 @@ def get_files(root: str, subpath: str = ""):
     try:
         for entry in target_path.iterdir():
             relative_path = entry.relative_to(root_path)
+
+            if is_hidden_filesystem_path(relative_path):
+                continue
+
+            # A visible symlink must not reveal a hidden or out-of-root target.
+            try:
+                resolved_relative = entry.resolve().relative_to(root_path)
+            except (ValueError, OSError, RuntimeError):
+                continue
+
+            if is_hidden_filesystem_path(resolved_relative):
+                continue
 
             try:
                 stat = entry.stat()
